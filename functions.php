@@ -105,6 +105,18 @@ function practice_customize_register($wp_customize){
     'default' =>'#006ec3',
     'transport'=>'refresh',
   ));
+  $wp_customize->add_setting('practice_btn_color', array(
+    'default' =>'#006ec3',
+    'transport'=>'refresh',
+  ));
+  $wp_customize->add_setting('practice_body_color', array(
+    'default' =>'#ffffff',
+    'transport'=>'refresh',
+  ));
+  $wp_customize->add_setting('practice_siteNavHover_color', array(
+    'default' =>'#ECECEC',
+    'transport'=>'refresh',
+  ));
   $wp_customize->add_section('practice_standard_colors', array(
     'title'=>__('Standard Colors','DemoTemplate'),
     'priority' => 30,
@@ -115,6 +127,25 @@ function practice_customize_register($wp_customize){
     'section' =>'practice_standard_colors',
     'settings' =>'practice_link_color',
   )));
+  $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize,'practice_btn_color_control',
+  array(
+    'label' =>__('Button Color','DemoTemplate'),
+    'section' =>'practice_standard_colors',
+    'settings' =>'practice_btn_color',
+  )));
+  $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize,'practice_body_color_control',
+  array(
+    'label' =>__('Body Color','DemoTemplate'),
+    'section' =>'practice_standard_colors',
+    'settings' =>'practice_body_color',
+  )));
+  $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize,'practice_siteNavHover_color_control',
+  array(
+    'label' =>__('Navigation Hover Color','DemoTemplate'),
+    'section' =>'practice_standard_colors',
+    'settings' =>'practice_siteNavHover_color',
+  )));
+
 }
 add_action('customize_register','practice_customize_register');
 // Output Customize CSS
@@ -126,7 +157,30 @@ function practice_customize_css() {
             a:visited {
                 color:<?php echo get_theme_mod('practice_link_color');?>;
             }
+            .site-header nav ul li.current-menu-item a:link,
+            .site-header nav ul li.current-menu-item a:visited,
+            .site-header nav ul li.current-page-ancestor a:link,
+            .site-header nav ul li.current-page-ancestor a:visited{
+              background-color:<?php echo get_theme_mod('practice_link_color');?>;
+            }
+            .btn-a,
+            .btn-a:link,
+            .btn-a:visited,
+            #searchsubmit{
+              background-color:<?php echo get_theme_mod('practice_btn_color');?>;
+            }
+            body{
+              background-color:<?php echo get_theme_mod('practice_body_color');?>;
+            }
+            .site-header nav ul li a:hover{
+              background-color:<?php echo get_theme_mod('practice_siteNavHover_color');?>;
+            }
         </style>
     <?php
 }
 add_action('wp_head', 'practice_customize_css');
+
+//adding WooCommerce support
+add_action( 'after_setup_theme', function() {
+	add_theme_support( 'woocommerce' );
+} );
