@@ -98,3 +98,35 @@ function ourWidgetsInit(){
   ));
 }
 add_action('widgets_init','ourWidgetsInit');
+
+//Customize Appeearance options
+function practice_customize_register($wp_customize){
+  $wp_customize->add_setting('practice_link_color', array(
+    'default' =>'#006ec3',
+    'transport'=>'refresh',
+  ));
+  $wp_customize->add_section('practice_standard_colors', array(
+    'title'=>__('Standard Colors','DemoTemplate'),
+    'priority' => 30,
+  ));
+  $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize,'practice_link_color_control',
+  array(
+    'label' =>__('Link Color','DemoTemplate'),
+    'section' =>'practice_standard_colors',
+    'settings' =>'practice_link_color',
+  )));
+}
+add_action('customize_register','practice_customize_register');
+// Output Customize CSS
+
+function practice_customize_css() {
+    ?>
+        <style>
+            a:link,
+            a:visited {
+                color:<?php echo get_theme_mod('practice_link_color');?>;
+            }
+        </style>
+    <?php
+}
+add_action('wp_head', 'practice_customize_css');
